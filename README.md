@@ -2,6 +2,8 @@
 
 This is a web application built with Next.js that allows users to generate strong, customizable passwords. Users can specify the password length and include or exclude different character types (uppercase letters, lowercase letters, numbers, and symbols) to create passwords tailored to their security needs.
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/thimiraonline/password-generator&project-name=my-password-generator&repository-name=my-password-generator)
+
 ## Tech Stack
 
 - **Framework:** [Next.js](https://nextjs.org/) - A React framework for building full-stack web applications. Used for server-side rendering, routing, and overall application structure.
