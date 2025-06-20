@@ -3,14 +3,12 @@
 import { Copy, RefreshCw } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 
-// Import shadcn/ui components
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 
-// A custom Progress component to allow for dynamic color changes
 type CustomProgressProps = {
   value: number;
   color: string;
@@ -29,9 +27,7 @@ const CustomProgress = ({ value, color }: CustomProgressProps) => (
   </div>
 );
 
-// --- Main Application Component ---
 export default function App() {
-  // --- State Management ---
   const [password, setPassword] = useState("");
   const [length, setLength] = useState(16);
   const [includeDigits, setIncludeDigits] = useState(true);
@@ -40,16 +36,14 @@ export default function App() {
   const [excludeSimilar, setExcludeSimilar] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [strengthText, setStrengthText] = useState("");
-  const [strengthColor, setStrengthColor] = useState("#0D9488"); // Default to dark teal
+  const [strengthColor, setStrengthColor] = useState("#0D9488");
   const [copied, setCopied] = useState(false);
 
-  // --- Character Sets ---
   const DIGITS = "0123456789";
   const LETTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  const SYMBOLS = "!@#$%^&*()_+-=[]{}|;:,.<>?";
+  const SYMBOLS = "!@#$%&*()_+-=[]{}<>?";
   const SIMILAR_CHARS = /[il1Lo0O2ZzS5s]/g;
 
-  // --- Password Generation Logic ---
   const generatePassword = useCallback(() => {
     let charset = "";
     if (includeDigits) charset += DIGITS;
@@ -74,39 +68,37 @@ export default function App() {
     setCopied(false);
   }, [length, includeDigits, includeLetters, includeSymbols, excludeSimilar]);
 
-  // --- Effects ---
   useEffect(() => {
     generatePassword();
   }, [generatePassword]);
 
-  // This effect calculates strength based on the new length criteria.
   useEffect(() => {
     let text = "";
     let percentage = 0;
-    let color = "#EF4444"; // default red
+    let color = "#EF4444";
 
     if (length <= 6) {
       text = "Good, but we can make it stronger";
       percentage = 25;
-      color = "#EF4444"; // red
+      color = "#EF4444";
     } else if (length >= 7 && length <= 8) {
       text = "It's just short of great";
       percentage = 50;
-      color = "#F59E0B"; // orange
+      color = "#F59E0B";
     } else if (length >= 9 && length <= 10) {
       text = "Now that's a strong password!";
       percentage = 75;
-      color = "#10B981"; // green
+      color = "#10B981";
     } else if (length >= 11) {
       text = "Ultimate password strength reached!";
       percentage = 100;
-      color = "#0D9488"; // dark teal
+      color = "#0D9488";
     }
 
     setStrengthText(text);
     setPasswordStrength(percentage);
     setStrengthColor(color);
-  }, [length]); // Dependency array now only contains length
+  }, [length]);
 
   // --- Event Handlers ---
   const handleCopy = () => {
@@ -129,7 +121,6 @@ export default function App() {
     document.body.removeChild(textArea);
   };
 
-  // --- Helper to render password with colors ---
   const renderPasswordWithColors = (pass: string) => {
     const isDarkMode =
       typeof window !== "undefined" &&
@@ -170,7 +161,7 @@ export default function App() {
                 onClick={generatePassword}
                 className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground"
               >
-                <RefreshCw className="h-8 w-8" />
+                <RefreshCw className="size-6" />
               </Button>
             </div>
 
@@ -217,61 +208,64 @@ export default function App() {
           </div>
 
           {/* Options */}
-          <div className="space-y-4">
-            <h4 className="text-sm font-semibold">OPTIONS</h4>
-            <div className="flex items-center justify-between">
-              <div>
-                <Label htmlFor="digits" className="font-medium">
-                  Digits
-                </Label>
-                <p className="text-sm text-muted-foreground">( e.g. 345 )</p>
+          <div className="space-y-2">
+            <h4 className="text-xs px-4 py-2 font-normal">OPTIONS</h4>
+
+            <div className="bg-gray-100/60 px-4 py-4 rounded-lg mb-4 space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label htmlFor="digits" className="font-medium">
+                    Digits
+                  </Label>
+                  <p className="text-sm text-muted-foreground">( e.g. 345 )</p>
+                </div>
+                <Switch
+                  id="digits"
+                  checked={includeDigits}
+                  onCheckedChange={setIncludeDigits}
+                />
               </div>
-              <Switch
-                id="digits"
-                checked={includeDigits}
-                onCheckedChange={setIncludeDigits}
-              />
-            </div>
-            <div className="flex items-center justify-between">
-              <div>
-                <Label htmlFor="letters" className="font-medium">
-                  Letters
-                </Label>
-                <p className="text-sm text-muted-foreground">( e.g. Aa )</p>
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label htmlFor="letters" className="font-medium">
+                    Letters
+                  </Label>
+                  <p className="text-sm text-muted-foreground">( e.g. Aa )</p>
+                </div>
+                <Switch
+                  id="letters"
+                  checked={includeLetters}
+                  onCheckedChange={setIncludeLetters}
+                />
               </div>
-              <Switch
-                id="letters"
-                checked={includeLetters}
-                onCheckedChange={setIncludeLetters}
-              />
-            </div>
-            <div className="flex items-center justify-between">
-              <div>
-                <Label htmlFor="symbols" className="font-medium">
-                  Symbols
-                </Label>
-                <p className="text-sm text-muted-foreground">( e.g. @$# )</p>
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label htmlFor="symbols" className="font-medium">
+                    Symbols
+                  </Label>
+                  <p className="text-sm text-muted-foreground">( e.g. @$# )</p>
+                </div>
+                <Switch
+                  id="symbols"
+                  checked={includeSymbols}
+                  onCheckedChange={setIncludeSymbols}
+                />
               </div>
-              <Switch
-                id="symbols"
-                checked={includeSymbols}
-                onCheckedChange={setIncludeSymbols}
-              />
-            </div>
-            <div className="flex items-center justify-between">
-              <div>
-                <Label htmlFor="similar" className="font-medium">
-                  Similar characters
-                </Label>
-                <p className="text-sm text-muted-foreground">
-                  ( e.g. 1l | O0 Z2 )
-                </p>
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label htmlFor="similar" className="font-medium">
+                    Similar characters
+                  </Label>
+                  <p className="text-sm text-muted-foreground">
+                    ( e.g. 1l | O0 Z2 )
+                  </p>
+                </div>
+                <Switch
+                  id="similar"
+                  checked={excludeSimilar}
+                  onCheckedChange={setExcludeSimilar}
+                />
               </div>
-              <Switch
-                id="similar"
-                checked={excludeSimilar}
-                onCheckedChange={setExcludeSimilar}
-              />
             </div>
           </div>
         </CardContent>
